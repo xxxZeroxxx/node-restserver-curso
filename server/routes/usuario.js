@@ -8,11 +8,6 @@ const Usuario = require('../models/usuario');
 
 const app = express();
 
-//user: admin
-//password: 4ucWBWLlrzYBRNo0
-//mongodb+srv://admin:4ucWBWLlrzYBRNo0@cluster0-1uc41.mongodb.net/cafe
-
-
 app.get('/usuario', function(req, res) {
 
     let desde = req.query.desde || 0;
