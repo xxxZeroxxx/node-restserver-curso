@@ -6,9 +6,14 @@ const _ = require('underscore');
 
 const Usuario = require('../models/usuario');
 
+const { verificaToken, verificaAdminRole } = require('../middlewares/autenticacion');
+
 const app = express();
 
-app.get('/usuario', function(req, res) {
+// Los middleware se utilizan como segundo argumento
+// Se esta indicando que ese es el middleware que se va a utilizar
+
+app.get('/usuario', verificaToken, (req, res) => {
 
     let desde = req.query.desde || 0;
     desde = Number(desde);
@@ -40,7 +45,7 @@ app.get('/usuario', function(req, res) {
 
 });
 
-app.post('/usuario', function(req, res) {
+app.post('/usuario', [verificaToken, verificaAdminRole], (req, res) => {
 
     let body = req.body;
 
@@ -50,6 +55,7 @@ app.post('/usuario', function(req, res) {
         password: bcrypt.hashSync(body.password, 10),
         role: body.role
     });
+
     //Para grabar en BD
     usuario.save((err, usuarioDB) => {
 
@@ -77,7 +83,7 @@ app.post('/usuario', function(req, res) {
 
 });
 
-app.put('/usuario/:id', function(req, res) {
+app.put('/usuario/:id', [verificaToken, verificaAdminRole], (req, res) => {
     let id = req.params.id;
 
     let body = _.pick(req.body, ['nombre', 'email', 'img', 'role', 'estado']);
@@ -99,7 +105,7 @@ app.put('/usuario/:id', function(req, res) {
 
 });
 
-app.delete('/usuario/:id', function(req, res) {
+app.delete('/usuario/:id', [verificaToken, verificaAdminRole], (req, res) => {
 
     let id = req.params.id;
 

@@ -20,9 +20,9 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
+//Configuracion Global de Rutas
+app.use(require('./routes/index'));
 
-//usar el archivo usuario.js
-app.use(require('./routes/usuario'));
 
 app.listen(process.env.PORT, () => {
     console.log('Escuchando puerto: ', process.env.PORT);
